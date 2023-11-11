@@ -22,6 +22,7 @@ const {
   notFound,
   errorHandler,
 } = require("../backend/middleware/errorMiddleware");
+const path = require("path");
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -29,17 +30,32 @@ connection_db(); // database connection
 
 const app = express();
 
-app.use(cors());
-
 app.use(express.json()); // to accept request in json format
 
-app.get("/", (req, res) => {
-  res.send("App is running");
-});
+// app.get("/", (req, res) => {
+//   res.send("App is running");
+// });
 
 app.use("/api/user", userRoutes); // user api endpoint
 app.use("/api/chats", chatRoutes); // chats api endpoint
 app.use("/api/message", messageRoutes); // message api endpoint
+
+// ---------------Deployment Code---------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+// ---------------Deployment Code---------------------
 
 app.use(notFound); //middleware is used to catch any unmatched routes
 app.use(errorHandler); //middleware to handle any errors that occurred during the request processing.
