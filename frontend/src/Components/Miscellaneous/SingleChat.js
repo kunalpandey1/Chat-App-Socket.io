@@ -188,6 +188,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             display="flex"
             justifyContent={{ base: "space-between" }}
             alignItems={"center"}
+            fontWeight={"bold"}
           >
             <IconButton
               display={{ base: "flex", md: "none" }}
@@ -222,6 +223,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             height="100%"
             borderRadius={"lg"}
             overflowY={"hidden"}
+            color={"black"}
           >
             {loading ? (
               <Spinner
